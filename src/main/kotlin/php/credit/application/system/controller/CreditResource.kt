@@ -23,14 +23,18 @@ class CreditResource(
 ) {
 
     @PostMapping
-    fun saveCredit(@RequestBody creditDto: CreditDto): ResponseEntity<String> {
+    fun saveCredit(
+        @RequestBody creditDto: CreditDto
+    ): ResponseEntity<String> {
         val savedCredit = this.creditService.save(creditDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body("Credit ${savedCredit.creditCode} - Customer ${savedCredit.customer?.firstName} has been saved")
+            .body("Credit ${savedCredit.creditCode} - Customer ${savedCredit.customer?.email} has been saved")
     }
 
     @GetMapping
-    fun findAllByCustomerId(@RequestParam(value = "customerId") customerId: Long): ResponseEntity<List<CreditViewList>> {
+    fun findAllByCustomerId(
+        @RequestParam(value = "customerId") customerId: Long
+    ): ResponseEntity<List<CreditViewList>> {
         val creditViewList = this.creditService.findAllByCustomer(customerId)
             .map { credit: Credit -> CreditViewList(credit) }
         return ResponseEntity.status(HttpStatus.OK).body(creditViewList)
