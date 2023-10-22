@@ -1,5 +1,6 @@
 package php.credit.application.system.controller
 
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +25,9 @@ class CreditResource(
 
     @PostMapping
     fun saveCredit(
-        @RequestBody creditDto: CreditDto
+        @RequestBody
+        @Valid
+        creditDto: CreditDto
     ): ResponseEntity<String> {
         val savedCredit = this.creditService.save(creditDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -33,7 +36,8 @@ class CreditResource(
 
     @GetMapping
     fun findAllByCustomerId(
-        @RequestParam(value = "customerId") customerId: Long
+        @RequestParam(value = "customerId")
+        customerId: Long
     ): ResponseEntity<List<CreditViewList>> {
         val creditViewList = this.creditService.findAllByCustomer(customerId)
             .map { credit: Credit -> CreditViewList(credit) }
@@ -42,8 +46,10 @@ class CreditResource(
 
     @GetMapping("/{creditCode}")
     fun findByCreditCode(
-        @RequestParam(value = "customerId") customerId: Long,
-        @PathVariable creditCode: UUID
+        @RequestParam(value = "customerId")
+        customerId: Long,
+        @PathVariable
+        creditCode: UUID
     ): ResponseEntity<CreditView> {
         val credit = this.creditService.findByCreditCode(customerId, creditCode)
         val creditView = CreditView(credit)
