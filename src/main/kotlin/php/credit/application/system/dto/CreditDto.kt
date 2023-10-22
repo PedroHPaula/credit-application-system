@@ -1,7 +1,8 @@
 package php.credit.application.system.dto
 
 import jakarta.validation.constraints.Future
-import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.NotNull
 import php.credit.application.system.entity.Credit
 import php.credit.application.system.entity.Customer
@@ -15,6 +16,8 @@ data class CreditDto(
     @field:Future(message = "The date of the First Installment is not valid")
     val dayFirstInstallment: LocalDate,
     @field:NotNull(message = "Please insert the Number of Installments")
+    @field:Min(value = 1)
+    @field:Max(value = 48)
     val numberOfInstallments: Int,
     @field:NotNull(message = "Please provide the ID of a Customer")
     val customerId: Long
