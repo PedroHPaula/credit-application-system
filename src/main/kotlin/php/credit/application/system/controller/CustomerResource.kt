@@ -30,10 +30,10 @@ class CustomerResource(
         @RequestBody
         @Valid
         customerDto: CustomerDto
-    ): ResponseEntity<String> {
+    ): ResponseEntity<CustomerView> {
         val savedCustomer = this.customerService.save(customerDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body("Customer ${savedCustomer.email} has been successfully saved!")
+            .body(CustomerView(savedCustomer))
     }
 
     @GetMapping("/{customerId}")
